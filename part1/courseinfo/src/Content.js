@@ -1,9 +1,8 @@
 const Content = (props) => {
+    console.log(props)
     return (
-        <p>
-            {props.part} {props.exercise}
-        </p>
-        )
+        props.parts.map(object => <p> {object.name} {object.exercises} </p>)
+    )
 }
 
 export default Content;
