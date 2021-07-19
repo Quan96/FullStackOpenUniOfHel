@@ -1,26 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', show: true },
-    { name: 'Ada Lovelace', number: '39-44-5323523', show: true },
-    { name: 'Dan Abramov', number: '12-43-234345', show: true },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', show: true }
-  ])
+  const [persons, setPersons] = useState([])
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ newFilter, setFilter ] = useState('')
+
+const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response.data)
+        setPersons(response.data)
+      })
+  }
+
+  console.log('render', persons.length, 'persons')
+  useEffect(hook, [])
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber,
-      show: true
+      id: persons.length + 1
     }
     
     const idx = persons.findIndex((person) => person.name === personObject.name)
@@ -68,4 +77,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
